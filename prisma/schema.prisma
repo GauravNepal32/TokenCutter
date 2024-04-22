@@ -1,0 +1,50 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       String  @id @map("_id")
+  username String
+  image   String
+  sessions Session[]
+  oauthaccount OAuthAccount[]
+  apirecord APIRecord[]
+}
+
+model OAuthAccount{
+  id String @id @map("_id")
+  provider String
+  provider_user_id Float @unique
+  userId String
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model APIRecord{
+  id String @id @map("_id")
+  name String
+  userId String
+  hasedAPI String @unique
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  createAt DateTime
+  updatedAt DateTime
+  apiusage APIUsageRecord[]
+}
+
+model APIUsageRecord{
+  id String @id @map("_id")
+  apiId String
+  apirecord APIRecord  @relation(references: [id], fields: [apiId], onDelete: Cascade)
+  createdAt DateTime
+}
+
+model Session {
+  id       String  @id @map("_id")
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
