@@ -19,6 +19,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { cookies } from 'next/headers';
+import { ManageAPI } from '@/components/Global/ManageAPI';
 
 const page = async () => {
     async function createKey(formData: FormData) {
@@ -34,7 +36,7 @@ const page = async () => {
         }
         const hasedKey = await bcrypt.hash(apiKey, 10);
 
-        await prisma.aPIRecord.create({
+        const newAPIRecord = await prisma.aPIRecord.create({
             data: {
                 id: generateId(15),
                 name: rawData.name,
@@ -43,6 +45,9 @@ const page = async () => {
                 createAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             }
+        })
+        cookies().set(newAPIRecord.id, apiKey, {
+            expires: 60
         })
         revalidatePath('/api')
         return { data: apiKey }
@@ -86,7 +91,7 @@ const page = async () => {
                             <TableCaption>A list of your API Key.</TableCaption>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-[100px]">Name</TableHead>
+                                    <TableHead className="w-[160px]">Name</TableHead>
                                     <TableHead>Key</TableHead>
                                     <TableHead>Create At</TableHead>
                                     <TableHead className="text-right">Last Used</TableHead>
@@ -96,15 +101,14 @@ const page = async () => {
                                 {apiData.map((x, index) => (
                                     <TableRow key={index}>
                                         <TableCell className="font-medium">{x.name}</TableCell>
-                                        <TableCell>{x.hasedAPI}</TableCell>
+                                        <TableCell className='flex items-center'>{cookies().get(x.id)?.value ?? "************"} {" "}
+                                            <ManageAPI createKey={createKey} keyData={x} /></TableCell>
                                         <TableCell>{format(x.createAt, 'yyyy-MM-dd')}</TableCell>
                                         <TableCell className="text-right">{format(x.updatedAt, 'yyyy-MM-dd')}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
-
-
                     </>
                 }
 

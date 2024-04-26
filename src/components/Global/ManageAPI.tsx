@@ -11,21 +11,22 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { APIRecord } from "@prisma/client"
 import { FormHTMLAttributes, useState } from "react"
 
 
-export function CreateAPI({ createKey }: { createKey: any }) {
+export function ManageAPI({ createKey, keyData }: { createKey: any, keyData: APIRecord }) {
     const [open, setOpen] = useState<boolean>(false)
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="default">Add Key</Button>
+                <p className="text-blue-500 cursor-pointer hover:underline ml-3 ">Manage</p>
+                {/* <Button className="text-blue-700" variant="ghost">Manage</Button> */}
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[525px]">
                 <DialogHeader>
-                    <DialogTitle>Create API Key</DialogTitle>
+                    <DialogTitle>Manage Key</DialogTitle>
                     <DialogDescription>
-                        Create a new API Key to get started with TokenCutter.
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={(e) => { setOpen(false) }} action={createKey}>
@@ -37,13 +38,13 @@ export function CreateAPI({ createKey }: { createKey: any }) {
                             <Input
                                 id="name"
                                 name="name"
-                                defaultValue="Pedro Duarte"
+                                defaultValue={keyData.name}
                                 className="col-span-3"
                             />
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button type="submit">Create</Button>
+                        <Button type="submit">Update</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

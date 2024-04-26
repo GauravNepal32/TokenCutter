@@ -7,7 +7,7 @@ import Image from 'next/image'
 const WhyUs = () => {
     return (
         <div className="my-10 overflow-hidden">
-            <h1 className="text-3xl font-bold text-center my-10">Why use DownToken?</h1>
+            <h1 className="text-3xl font-bold text-center my-10">Why use TokenCutter?</h1>
             <div className=" container grid grid-cols-6 gap-1">
                 <div className="col-span-2 my-auto  flex flex-col gap-y-3">
                     <HoverCard className="">

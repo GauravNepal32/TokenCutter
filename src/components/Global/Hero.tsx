@@ -38,7 +38,7 @@ export function HeroHighlightDemo() {
                     duration: 0.5,
                     ease: [0.4, 0.0, 0.2, 1],
                 }}
-                className="text-center text-lg mt-4 text-bold text-slate-600">
+                className="text-center text-lg mt-4 text-bold text-slate-400">
                 Reduce the token size by more than 30%
             </motion.p>
         </HeroHighlight>
